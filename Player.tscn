@@ -117,6 +117,12 @@ script = ExtResource("13_cge57")
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 0.2
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.407843)
+position = Vector2(58.5, -30)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_usoi8")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
 [connection signal="death" from="." to="." method="_on_death"]

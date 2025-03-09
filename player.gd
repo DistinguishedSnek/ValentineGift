@@ -19,8 +19,10 @@ var distance := Vector2.ZERO
 var safe_landing := false
 var mouse_enable := false
 var viewdirection
+var ghostfriend_distance
 
 @onready var charge_bar: TextureProgressBar = $Node2D/TextureProgressBar
+@onready var ghost_frog: Sprite2D = $Sprite2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,9 +32,13 @@ func _ready():
 	charge_bar.min_value = min_charge
 	charge_bar.max_value = max_charge
 	safe_landing = true
+	ghost_frog.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):	
+func _process(delta):
+	if !Input.is_action_pressed("jump"):
+		ghost_frog.hide()
+	
 	if mouse_enable == false:
 		pass
 	else:
@@ -58,6 +64,7 @@ func _process(delta):
 			else:
 				$AnimatedSprite2D.flip_h = false
 		
+		
 		if distance == Vector2.ZERO:
 			if !safe_landing:
 				death.emit()
@@ -69,12 +76,16 @@ func _process(delta):
 					charge_start_time = Time.get_ticks_msec()
 					
 				charge_bar.value = _calc_distance_to_jump(Time.get_ticks_msec() - charge_start_time)
+				jump_direction = (get_global_mouse_position() - global_position).normalized()
+				ghostfriend_distance = _jump(charge_start_time, Time.get_ticks_msec()) * jump_direction
+				new_position = position + ghostfriend_distance
+				if Global.hardmode:
+					ghost_frog.global_position = new_position
+					ghost_frog.show()
 					
 			if Input.is_action_just_released("jump"):
 				charging = false
-				jump_direction = (get_global_mouse_position() - global_position).normalized()
-				distance = _jump(charge_start_time, Time.get_ticks_msec()) * jump_direction
-				new_position = position + distance
+				distance = ghostfriend_distance
 				new_position = new_position.clamp(Vector2.ZERO, screen_size)
 				jumping.emit()
 				

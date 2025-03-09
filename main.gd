@@ -33,10 +33,13 @@ func new_game():
 	get_tree().call_group("Lillypads", "queue_free")
 	$Music.play()
 	$Player.start($StartPosition.position)
+	
 	var startpad = lillypad_scene.instantiate()
 	startpad.position = $Player.position
 	add_child(startpad)
 	startpad.add_to_group("Lillypads")
+	lillypad_count += 1
+	
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
@@ -78,7 +81,7 @@ func _on_score_timer_timeout() -> void:
 
 func _on_start_timer_timeout() -> void:
 	$MobTimer.wait_time = 2
-	$LillyPadSpawnTimer.wait_time = 0
+	$LillyPadSpawnTimer.wait_time = 1
 	$MobTimer.start()
 	$ScoreTimer.start()
 	$LillyPadSpawnTimer.start()
@@ -86,6 +89,7 @@ func _on_start_timer_timeout() -> void:
 
 func _on_lilly_pad_spawn_timer_timeout() -> void:
 	# Create a new instance of the Lillypad scene.
+	$LillyPadSpawnTimer.stop()
 	var pad = lillypad_scene.instantiate()
 	
 	var x_pos = randf_range(50, screen_size.x - 50)
@@ -100,9 +104,10 @@ func _on_lilly_pad_spawn_timer_timeout() -> void:
 
 	# Spawn the mob by adding it to the Main scene.
 	add_child(pad)
+	lillypad_count += 1
 	
 	if lillypad_count < 10:
-		$LillyPadSpawnTimer.wait_time = randi_range(0, 1) #Next spawn random between 0 and 2 sec
-		lillypad_count += 1
+		$LillyPadSpawnTimer.wait_time = randi_range(1, 3) #Next spawn random between 0 and 2 sec
 	else:
-		$LillyPadSpawnTimer.wait_time = randi_range(5, 10) #Next spawn random between 5 and 10 sec
+		$LillyPadSpawnTimer.wait_time = randi_range(3, 5) #Next spawn random between 5 and 10 sec
+	$LillyPadSpawnTimer.start()

@@ -1,15 +1,10 @@
-# globals.gd
-extends Node
-
-var charge
-var time
-var start_time
-var hardmode
+extends AnimatedSprite2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	var GhostAnim = $AnimatedSprite2D.sprite_frames.get_animation_names()
+	$AnimatedSprite2D.play()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

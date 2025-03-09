@@ -27,14 +27,24 @@ func show_game_over():
 	# Make a one-shot timer and wait for it to finish.
 	await get_tree().create_timer(1.0).timeout
 	$StartButton.show()
+	$HardMode.show()
 	
 func update_score(score):
 	$ScoreLabel.text = str(score)
 
 func _on_start_button_pressed() -> void:
 	$StartButton.hide()
+	$HardMode.hide()
+	Global.hardmode = false
 	start_game.emit()
 
 
 func _on_message_timer_timeout() -> void:
 	$Message.hide()
+
+
+func _on_hard_mode_pressed() -> void:
+	$StartButton.hide()
+	$HardMode.hide()
+	Global.hardmode = true
+	start_game.emit()
