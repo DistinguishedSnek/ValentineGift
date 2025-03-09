@@ -1,16 +1,22 @@
 extends Node
 
+#Add possibility for a tadpole to spawn with a lillypad
+#Make it grow each time you visit it after hitting a food item
+
 @export var mob_scene: PackedScene
 @export var lillypad_scene: PackedScene
 @export var DeathAnim: PackedScene
+@export var Child_Tadpole: PackedScene
 var score
 var screen_size
 var lillypad_count
-
+var tadpole
+var tadpole_spawn_number
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
+	randomize()
 
 
 
@@ -47,6 +53,8 @@ func new_game():
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
+	
+	tadpole = false
 
 
 func _on_mob_timer_timeout() -> void:
@@ -114,4 +122,12 @@ func _on_lilly_pad_spawn_timer_timeout() -> void:
 		$LillyPadSpawnTimer.wait_time = randi_range(1, 3) #Next spawn random between 0 and 2 sec
 	else:
 		$LillyPadSpawnTimer.wait_time = randi_range(3, 5) #Next spawn random between 5 and 10 sec
+		tadpole_spawn_number = randi_range(0, 50)
 	$LillyPadSpawnTimer.start()
+	
+	if tadpole_spawn_number > 48 && !tadpole:
+		var spawn_tadpole = Child_Tadpole.instantiate()
+		spawn_tadpole.position.x = pad.global_position.x + 20
+		spawn_tadpole.position.y = pad.global_position.y + 20
+		tadpole = true
+	

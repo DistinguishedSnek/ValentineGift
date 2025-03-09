@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://bw54empo0d58t"]
+[gd_scene load_steps=12 format=4 uid="uid://bw54empo0d58t"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_0pbjb"]
 [ext_resource type="PackedScene" uid="uid://dcum2831n22vl" path="res://Player.tscn" id="1_unbdb"]
 [ext_resource type="PackedScene" uid="uid://cvoc3lecv38h" path="res://mob.tscn" id="2_06a30"]
 [ext_resource type="PackedScene" uid="uid://bot0fif46ilfy" path="res://hud.tscn" id="4_krnea"]
 [ext_resource type="PackedScene" uid="uid://dw15bomw10xit" path="res://DeathAnim.tscn" id="4_q5n2j"]
+[ext_resource type="PackedScene" uid="uid://ibb5nm2wml06" path="res://Tadpole.tscn" id="5_20a4f"]
 [ext_resource type="AudioStream" uid="uid://bbfbt8cq4ckio" path="res://art/gameover.wav" id="5_l7fe1"]
 [ext_resource type="PackedScene" uid="uid://70u7dbhvfb7i" path="res://Lillypad.tscn" id="6_eh0c8"]
 
@@ -28,6 +29,7 @@ script = ExtResource("1_0pbjb")
 mob_scene = ExtResource("2_06a30")
 lillypad_scene = ExtResource("6_eh0c8")
 DeathAnim = ExtResource("4_q5n2j")
+Child_Tadpole = ExtResource("5_20a4f")
 
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
