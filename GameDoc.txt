@@ -1,0 +1,34 @@
+-frog jump
+* when pressing mouse1, 
+go into jump state X
+* Jump prep anim X
+* Hud displays arrow,
+changes size as strenght
+increases X
+* Arrow rotates X
+* letting go jumps
+repositions the player
+* jumping anim plays
+first 30% sprite 0
+Then sprite 1
+* * Sprite 2 is landing
+
+-lillypads
+* Pop up randomly
+* random lifespan 10-20 sec
+* When in last 5 sec they
+gain a deteriorating sprite
+Within a max circle
+
+-water background = death
+
+- Change arrow to two parts
+head of arrow moves forward
+with strenght of shot, revealing
+line behind it
+more intuitive for range
+
+
+-enemies
+
+-flies

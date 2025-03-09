@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://70u7dbhvfb7i"]
+
+[ext_resource type="Script" path="res://lillypad.gd" id="1_j7jwh"]
+[ext_resource type="Texture2D" uid="uid://dxbqhi0ahwdbi" path="res://art/LillyPad.png" id="1_lo56a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m803r"]
+radius = 47.2652
+
+[node name="StaticBody2D" type="StaticBody2D" groups=["lillypads"]]
+script = ExtResource("1_j7jwh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["lillypads"]]
+texture = ExtResource("1_lo56a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_m803r")
+
+[node name="LillyPadDeteriorate" type="Timer" parent="."]
+wait_time = 1.225
+
+[node name="LillyPadPerish" type="Timer" parent="."]
+
+[node name="TimeTracker" type="Label" parent="."]
+offset_left = 39.0
+offset_top = 29.0
+offset_right = 79.0
+offset_bottom = 52.0
+
+[connection signal="timeout" from="LillyPadDeteriorate" to="." method="_on_lilly_pad_deteriorate_timeout"]
+[connection signal="timeout" from="LillyPadPerish" to="." method="_on_lilly_pad_perish_timeout"]

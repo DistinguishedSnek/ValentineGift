@@ -1,0 +1,106 @@
+[gd_scene load_steps=14 format=3 uid="uid://dcum2831n22vl"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_phwhr"]
+[ext_resource type="Texture2D" uid="uid://dgn5aioca1rs1" path="res://art/Frog 16x16 base.png" id="2_2njfh"]
+[ext_resource type="Texture2D" uid="uid://ucxnre62pjgf" path="res://art/Frog 16x16 base 1.png" id="3_n3acw"]
+[ext_resource type="Texture2D" uid="uid://l2drcp65kjnw" path="res://art/Frog 16x16 base 2.png" id="4_b0y6t"]
+[ext_resource type="Texture2D" uid="uid://kpnbj7rdon5o" path="res://art/Frog 16x16 jump 1.png" id="5_spah0"]
+[ext_resource type="Texture2D" uid="uid://bf4bcdiwakcwb" path="res://art/Frog 16x16 jump 0.png" id="5_usoi8"]
+[ext_resource type="Texture2D" uid="uid://coabi5eo5vbpj" path="res://art/Frog 16x16 jump 2.png" id="6_y436d"]
+[ext_resource type="Texture2D" uid="uid://bhk7hhfud23nw" path="res://art/Arrow outline.png" id="8_kuu6v"]
+[ext_resource type="Texture2D" uid="uid://bwtv50u2qyrth" path="res://art/Arrow Colouring.png" id="9_6ryev"]
+[ext_resource type="Script" path="res://texture_progress_bar.gd" id="10_4nv6b"]
+[ext_resource type="Script" path="res://label.gd" id="11_s2dbf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ky0jy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2njfh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_n3acw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_b0y6t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_n3acw")
+}],
+"loop": true,
+"name": &"Frog idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_spah0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_y436d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_spah0")
+}],
+"loop": true,
+"name": &"Frog jump",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_usoi8")
+}],
+"loop": true,
+"name": &"Frog prep jump",
+"speed": 2.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vr5h2"]
+radius = 27.0
+height = 68.0
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_phwhr")
+min_charge = null
+max_charge = null
+speed = null
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ky0jy")
+animation = &"Frog idle"
+autoplay = "Frog idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_vr5h2")
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("10_4nv6b")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Node2D"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 58.5
+offset_top = -30.0
+offset_right = 243.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 30)
+value = 100.0
+texture_under = ExtResource("8_kuu6v")
+texture_progress = ExtResource("9_6ryev")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 18.0
+offset_top = -63.0
+offset_right = 58.0
+offset_bottom = -40.0
+script = ExtResource("11_s2dbf")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="jump_prep" from="." to="Node2D" method="_on_player_jump_prep"]
+[connection signal="jumping" from="." to="Node2D" method="_on_player_jumping"]
+[connection signal="jumping" from="." to="Label" method="_on_player_jumping"]
