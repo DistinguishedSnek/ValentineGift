@@ -134,7 +134,6 @@ func _on_death() -> void:
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)
 
-
 func _on_start_timer_timeout() -> void:
 	charging = false
 	mouse_enable = true

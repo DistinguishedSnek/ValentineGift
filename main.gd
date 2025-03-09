@@ -2,6 +2,7 @@ extends Node
 
 @export var mob_scene: PackedScene
 @export var lillypad_scene: PackedScene
+@export var DeathAnim: PackedScene
 var score
 var screen_size
 var lillypad_count
@@ -25,6 +26,9 @@ func game_over() -> void:
 	$HUD.show_game_over()
 	$Music.stop()
 	$DeathSound.play()
+	var Ghost = DeathAnim.instantiate()
+	Ghost.global_position = $Player.global_position
+	add_child(Ghost)
 
 func new_game():
 	score = 0
