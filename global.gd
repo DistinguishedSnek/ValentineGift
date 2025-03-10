@@ -1,8 +1,8 @@
 # globals.gd
 extends Node
 
-var charge
-var time
+var tadpole
+var tadpole_spawn_number
 var start_time
 var hardmode
 

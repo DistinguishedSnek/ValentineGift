@@ -7,7 +7,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#text = "charge: " + str(Global.charge)
+	text = "Tadpole number: " + str(Global.tadpole_spawn_number)
 	pass
 
 

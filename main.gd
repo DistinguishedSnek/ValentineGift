@@ -102,6 +102,21 @@ func _on_start_timer_timeout() -> void:
 func _on_lilly_pad_spawn_timer_timeout() -> void:
 	# Create a new instance of the Lillypad scene.
 	$LillyPadSpawnTimer.stop()
+		
+	if lillypad_count < 5:
+		$LillyPadSpawnTimer.wait_time = randi_range(1, 3) #Next spawn random between 0 and 2 sec
+		tadpole_spawn_number = 0
+		spawn_lillypad()
+	else:
+		$LillyPadSpawnTimer.wait_time = randi_range(3, 5) #Next spawn random between 3 and 5 sec
+		tadpole_spawn_number = randi_range(0, 50)
+		spawn_lillypad()
+		spawn_lillypad()
+		
+	$LillyPadSpawnTimer.start()
+	
+	
+func spawn_lillypad() -> void:
 	var pad = lillypad_scene.instantiate()
 	
 	var x_pos = randf_range(50, screen_size.x - 50)
@@ -118,16 +133,16 @@ func _on_lilly_pad_spawn_timer_timeout() -> void:
 	add_child(pad)
 	lillypad_count += 1
 	
-	if lillypad_count < 10:
-		$LillyPadSpawnTimer.wait_time = randi_range(1, 3) #Next spawn random between 0 and 2 sec
-	else:
-		$LillyPadSpawnTimer.wait_time = randi_range(3, 5) #Next spawn random between 5 and 10 sec
-		tadpole_spawn_number = randi_range(0, 50)
-	$LillyPadSpawnTimer.start()
+	Global.tadpole_spawn_number = tadpole_spawn_number
+	Global.tadpole = tadpole
 	
-	if tadpole_spawn_number > 48 && !tadpole:
+	if tadpole_spawn_number > 0 && tadpole == false:
 		var spawn_tadpole = Child_Tadpole.instantiate()
-		spawn_tadpole.position.x = pad.global_position.x + 20
-		spawn_tadpole.position.y = pad.global_position.y + 20
+		spawn_tadpole.position.x = pad.global_position.x + 25
+		spawn_tadpole.position.y = pad.global_position.y + 25
 		tadpole = true
-	
+		add_child(spawn_tadpole)
+		spawn_tadpole.despawn.connect(_on_despawn)
+
+func _on_despawn():
+	tadpole = false

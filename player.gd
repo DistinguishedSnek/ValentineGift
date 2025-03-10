@@ -67,7 +67,8 @@ func _process(delta):
 		
 		if distance == Vector2.ZERO:
 			if !safe_landing:
-				death.emit()
+				#death.emit()
+				pass
 				
 			if Input.is_action_pressed("jump"):
 				if charging == false:
@@ -109,7 +110,8 @@ func _calc_distance_to_jump(charge_duration):
 
 func _on_body_entered(body):
 	if body.is_in_group("mobs"):
-		death.emit()
+		#death.emit()
+		pass
 		
 	elif body.is_in_group("lillypads"):
 		safe_landing = true
