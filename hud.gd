@@ -2,6 +2,8 @@ extends CanvasLayer
 
 # Notifies `Main` node that the button has been pressed
 signal start_game
+var hardmode
+var godmode
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,6 +30,7 @@ func show_game_over():
 	await get_tree().create_timer(1.0).timeout
 	$StartButton.show()
 	$HardMode.show()
+	$GodMode.show()
 	
 func update_score(score):
 	$ScoreLabel.text = str(score)
@@ -35,7 +38,9 @@ func update_score(score):
 func _on_start_button_pressed() -> void:
 	$StartButton.hide()
 	$HardMode.hide()
+	$GodMode.hide()
 	Global.hardmode = false
+	Global.godmode = false
 	start_game.emit()
 
 
@@ -46,5 +51,16 @@ func _on_message_timer_timeout() -> void:
 func _on_hard_mode_pressed() -> void:
 	$StartButton.hide()
 	$HardMode.hide()
+	$GodMode.hide()
 	Global.hardmode = true
+	Global.godmode = false
+	start_game.emit()
+	
+
+func _on_god_mode_pressed() -> void:
+	$StartButton.hide()
+	$HardMode.hide()
+	$GodMode.hide()
+	Global.hardmode = false
+	Global.godmode = true
 	start_game.emit()

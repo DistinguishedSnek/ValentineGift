@@ -52,16 +52,16 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -140.0
-offset_right = 100.0
-offset_bottom = -40.0
+offset_left = -168.0
+offset_top = -160.0
+offset_right = 170.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_vc3xm")
 theme_override_font_sizes/font_size = 64
 shortcut = SubResource("Shortcut_4wvep")
-text = "Hardmode"
+text = "Start new"
 
 [node name="HardMode" type="Button" parent="."]
 anchors_preset = 7
@@ -69,16 +69,34 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -169.0
-offset_top = -280.0
-offset_right = 169.0
-offset_bottom = -180.0
+offset_left = -176.0
+offset_top = -296.0
+offset_right = 178.0
+offset_bottom = -196.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_vc3xm")
 theme_override_font_sizes/font_size = 64
 shortcut = SubResource("Shortcut_4wvep")
-text = "Start new
+text = "Hardmode
+"
+
+[node name="GodMode" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -168.0
+offset_top = -432.0
+offset_right = 170.0
+offset_bottom = -332.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_vc3xm")
+theme_override_font_sizes/font_size = 64
+shortcut = SubResource("Shortcut_4wvep")
+text = "Godmode
 "
 
 [node name="MessageTimer" type="Timer" parent="."]
@@ -87,6 +105,6 @@ one_shot = true
 
 [connection signal="start_game" from="." to="." method="_on_start_game"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="HardMode" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="HardMode" to="." method="_on_hard_mode_pressed"]
+[connection signal="pressed" from="GodMode" to="." method="_on_god_mode_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]

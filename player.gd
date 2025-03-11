@@ -67,8 +67,8 @@ func _process(delta):
 		
 		if distance == Vector2.ZERO:
 			if !safe_landing:
-				#death.emit()
-				pass
+				if !Global.godmode:
+					death.emit()
 				
 			if Input.is_action_pressed("jump"):
 				if charging == false:
@@ -80,7 +80,7 @@ func _process(delta):
 				jump_direction = (get_global_mouse_position() - global_position).normalized()
 				ghostfriend_distance = _jump(charge_start_time, Time.get_ticks_msec()) * jump_direction
 				new_position = position + ghostfriend_distance
-				if Global.hardmode:
+				if !Global.hardmode:
 					ghost_frog.global_position = new_position
 					ghost_frog.show()
 					
@@ -110,8 +110,8 @@ func _calc_distance_to_jump(charge_duration):
 
 func _on_body_entered(body):
 	if body.is_in_group("mobs"):
-		#death.emit()
-		pass
+		if !Global.godmode:
+			death.emit()
 		
 	elif body.is_in_group("lillypads"):
 		safe_landing = true
@@ -131,6 +131,7 @@ func start(pos):
 
 func _on_death() -> void:
 	hide() # Player disappears after being hit.
+	distance = Vector2.ZERO
 	safe_landing = true
 	hit.emit()
 	# Must be deferred as we can't change physics properties on a physics callback.
