@@ -8,5 +8,5 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#text = "StartTime: " + str(Global.start_time)
+	text = "Tadpole_caught: " + str(Global.tadpole_caught)
 	pass

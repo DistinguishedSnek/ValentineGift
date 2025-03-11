@@ -60,7 +60,7 @@ animations = [{
 radius = 27.0
 height = 68.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="Area2D" groups=["Players"]]
 z_index = 1
 script = ExtResource("1_phwhr")
 metadata/_edit_group_ = true

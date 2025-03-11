@@ -12,6 +12,8 @@ var screen_size
 var lillypad_count
 var tadpole
 var tadpole_spawn_number
+var tadpole_caught
+var spawn_tadpole
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,7 +24,19 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if tadpole_caught:
+		var min_distance = 50
+		var tadpole_dir = $Player.position - spawn_tadpole.position
+		var distance = tadpole_dir.length()
+		var tadpole_angle = tadpole_dir.angle()
+		var tadpole_sprite = spawn_tadpole.get_node("Sprite2D")
+		if tadpole_dir.x > 0:
+			tadpole_sprite.flip_v = false
+		else:
+			tadpole_sprite.flip_v = true
+		spawn_tadpole.rotation = tadpole_angle
+		if distance > min_distance:
+			spawn_tadpole.position = spawn_tadpole.position.move_toward($Player.position, 300 * delta)
 
 
 func game_over() -> void:
@@ -39,6 +53,7 @@ func game_over() -> void:
 func new_game():
 	score = 0
 	lillypad_count = 0
+	tadpole_caught = false
 	get_tree().call_group("mobs", "queue_free")
 	get_tree().call_group("Lillypads", "queue_free")
 	$Music.play()
@@ -136,13 +151,17 @@ func spawn_lillypad() -> void:
 	Global.tadpole_spawn_number = tadpole_spawn_number
 	Global.tadpole = tadpole
 	
-	if tadpole_spawn_number > 0 && tadpole == false:
-		var spawn_tadpole = Child_Tadpole.instantiate()
+	if tadpole_spawn_number > 25 && tadpole == false:
+		spawn_tadpole = Child_Tadpole.instantiate()
 		spawn_tadpole.position.x = pad.global_position.x + 25
 		spawn_tadpole.position.y = pad.global_position.y + 25
 		tadpole = true
 		add_child(spawn_tadpole)
 		spawn_tadpole.despawn.connect(_on_despawn)
+		spawn_tadpole.caught.connect(_on_caught)
 
 func _on_despawn():
 	tadpole = false
+	
+func _on_caught():
+	tadpole_caught = true

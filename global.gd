@@ -6,6 +6,7 @@ var tadpole_spawn_number
 var start_time
 var hardmode: bool
 var godmode: bool
+var tadpole_caught
 
 
 # Called when the node enters the scene tree for the first time.

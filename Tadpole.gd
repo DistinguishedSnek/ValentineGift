@@ -3,6 +3,9 @@ extends Node2D
 @export var sprite: Sprite2D
 
 signal despawn
+signal caught
+
+var Player
 
 var textures = [
 	preload("res://art/Tadpole0.png"),
@@ -34,3 +37,10 @@ func _on_wiggle_timeout() -> void:
 	$Wiggle.wait_time = randi_range(2, 5)/10
 	$Wiggle.start()
 	pass # Replace with function body.
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.is_in_group("Players"):
+		$DespawnTimer.stop()
+		$Wiggle.stop()
+		caught.emit()

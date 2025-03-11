@@ -16,7 +16,7 @@ var charge_start_time : float
 var jump_direction
 var new_position := Vector2.ZERO
 var distance := Vector2.ZERO
-var safe_landing := false
+var safe_landing := 0
 var mouse_enable := false
 var viewdirection
 var ghostfriend_distance
@@ -31,7 +31,7 @@ func _ready():
 	hide()
 	charge_bar.min_value = min_charge
 	charge_bar.max_value = max_charge
-	safe_landing = true
+	safe_landing = 0
 	ghost_frog.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,7 +66,7 @@ func _process(delta):
 		
 		
 		if distance == Vector2.ZERO:
-			if !safe_landing:
+			if safe_landing == 0:
 				if !Global.godmode:
 					death.emit()
 				
@@ -114,10 +114,12 @@ func _on_body_entered(body):
 			death.emit()
 		
 	elif body.is_in_group("lillypads"):
-		safe_landing = true
+		safe_landing += 1
+		print(safe_landing)
 		
 func _on_body_exited(body):
-	safe_landing = false
+	safe_landing -= 1
+	print(safe_landing)
 	
 func start(pos):
 	position = pos
@@ -132,7 +134,8 @@ func start(pos):
 func _on_death() -> void:
 	hide() # Player disappears after being hit.
 	distance = Vector2.ZERO
-	safe_landing = true
+	mouse_enable = false
+	safe_landing = 0
 	hit.emit()
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)

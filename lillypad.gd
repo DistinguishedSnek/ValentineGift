@@ -56,3 +56,5 @@ func _on_lilly_pad_deteriorate_timeout() -> void:
 
 func _on_lilly_pad_perish_timeout() -> void:
 	queue_free() # Replace with function body.
+	
+	

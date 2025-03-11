@@ -8,6 +8,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	text = "godmode: " + str(Global.godmode)
+	text = "tadpole_number: " + str(Global.tadpole_spawn_number)
 	pass
 	
