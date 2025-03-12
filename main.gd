@@ -7,6 +7,7 @@ extends Node
 @export var lillypad_scene: PackedScene
 @export var DeathAnim: PackedScene
 @export var Child_Tadpole: PackedScene
+@export var snack_scene: PackedScene
 var score
 var screen_size
 var lillypad_count
@@ -14,11 +15,15 @@ var tadpole
 var tadpole_spawn_number
 var tadpole_caught
 var spawn_tadpole
+var snack_count
+
+signal snack_eaten
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
 	randomize()
+	snack_count = 0
 
 
 
@@ -54,6 +59,7 @@ func new_game():
 	score = 0
 	lillypad_count = 0
 	tadpole_caught = false
+	snack_count = 0
 	get_tree().call_group("mobs", "queue_free")
 	get_tree().call_group("Lillypads", "queue_free")
 	$Music.play()
@@ -159,9 +165,22 @@ func spawn_lillypad() -> void:
 		add_child(spawn_tadpole)
 		spawn_tadpole.despawn.connect(_on_despawn)
 		spawn_tadpole.caught.connect(_on_caught)
+		
+	if tadpole_caught == true && randi_range(0, 50) > 40:
+		var snack = snack_scene.instantiate()
+		
+		snack.position = pad.position
+		snack.rotation = pad.rotation
+		
+		snack.add_to_group("Snacks")
+		
+		add_child(snack)
+		pad.perish.connect(snack._on_lillypad_despawn)
+		
 
 func _on_despawn():
 	tadpole = false
 	
 func _on_caught():
 	tadpole_caught = true
+	Global.tadpole_caught = tadpole_caught

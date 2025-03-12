@@ -2,6 +2,10 @@
  A gift for my gf for valentine, my first ever game
 
 TODO:
-	Fix bug with overlapping lillypads, where one dissapearing kills you X
 	Tadpole functionality (Half done, snacks)
+		currently at eaten.emit in snack
 	Replace enemies
+
+Perhaps: 
+	Add multiple tadpoles following
+	Add deaths for all kids

@@ -17,6 +17,8 @@ var textures_deteriorated = [
 var variant
 var current_timer
 
+signal perish
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
@@ -55,6 +57,7 @@ func _on_lilly_pad_deteriorate_timeout() -> void:
 
 
 func _on_lilly_pad_perish_timeout() -> void:
+	perish.emit()
 	queue_free() # Replace with function body.
 	
 	
