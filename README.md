@@ -3,7 +3,7 @@
 
 TODO:
 	Tadpole functionality (Half done, snacks)
-		currently at eaten.emit in snack
+		Fix Invalid access to property or key '_on_snack_eaten' on a base object of type 'previously freed'.
 	Replace enemies
 
 Perhaps: 

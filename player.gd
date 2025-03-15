@@ -8,7 +8,6 @@ signal death
 @export var min_charge := 100 #instant jump
 @export var max_charge := 1000
 @export var speed = 400 # How fast the player will move (pixels/sec).
-@onready var death_timer = $DeathTimer  # Add a Timer node inside the Player
 
 var screen_size # Size of the game window.
 var charging := false
@@ -33,6 +32,10 @@ func _ready():
 	charge_bar.max_value = max_charge
 	safe_landing = 0
 	ghost_frog.hide()
+	print("Player is in groups:", get_groups())
+	if not is_in_group("Players"):
+		add_to_group("Players")  # Add it if missing
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

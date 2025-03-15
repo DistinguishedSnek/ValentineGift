@@ -23,7 +23,10 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if Input.is_action_just_pressed("ui_accept"):  # Press Enter or Space
+		print("Simulating collision!")
+		_on_area_2d_area_entered($Area2D)  # Manually call it
+
 
 func _on_lillypad_despawn():
 	queue_free()

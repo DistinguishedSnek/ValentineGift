@@ -11,37 +11,21 @@ extends Node
 var score
 var screen_size
 var lillypad_count
-var tadpole
 var tadpole_spawn_number
-var tadpole_caught
-var spawn_tadpole
-var snack_count
-
-signal snack_eaten
+var new_tadpole
+var tadpoles = []
+var uncaught_tadpole
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
 	randomize()
-	snack_count = 0
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if tadpole_caught:
-		var min_distance = 50
-		var tadpole_dir = $Player.position - spawn_tadpole.position
-		var distance = tadpole_dir.length()
-		var tadpole_angle = tadpole_dir.angle()
-		var tadpole_sprite = spawn_tadpole.get_node("Sprite2D")
-		if tadpole_dir.x > 0:
-			tadpole_sprite.flip_v = false
-		else:
-			tadpole_sprite.flip_v = true
-		spawn_tadpole.rotation = tadpole_angle
-		if distance > min_distance:
-			spawn_tadpole.position = spawn_tadpole.position.move_toward($Player.position, 300 * delta)
+	pass
 
 
 func game_over() -> void:
@@ -58,8 +42,7 @@ func game_over() -> void:
 func new_game():
 	score = 0
 	lillypad_count = 0
-	tadpole_caught = false
-	snack_count = 0
+	uncaught_tadpole = false
 	get_tree().call_group("mobs", "queue_free")
 	get_tree().call_group("Lillypads", "queue_free")
 	$Music.play()
@@ -75,8 +58,6 @@ func new_game():
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
 	
-	tadpole = false
-
 
 func _on_mob_timer_timeout() -> void:
 	# Create a new instance of the Mob scene.
@@ -154,33 +135,50 @@ func spawn_lillypad() -> void:
 	add_child(pad)
 	lillypad_count += 1
 	
-	Global.tadpole_spawn_number = tadpole_spawn_number
-	Global.tadpole = tadpole
-	
-	if tadpole_spawn_number > 25 && tadpole == false:
-		spawn_tadpole = Child_Tadpole.instantiate()
-		spawn_tadpole.position.x = pad.global_position.x + 25
-		spawn_tadpole.position.y = pad.global_position.y + 25
-		tadpole = true
-		add_child(spawn_tadpole)
-		spawn_tadpole.despawn.connect(_on_despawn)
-		spawn_tadpole.caught.connect(_on_caught)
-		
-	if tadpole_caught == true && randi_range(0, 50) > 40:
-		var snack = snack_scene.instantiate()
-		
-		snack.position = pad.position
-		snack.rotation = pad.rotation
-		
-		snack.add_to_group("Snacks")
-		
-		add_child(snack)
-		pad.perish.connect(snack._on_lillypad_despawn)
+	if score > 30 && tadpoles[0] == null:
+		spawn_tadpole(pad)
+	elif tadpole_spawn_number > 40 && !uncaught_tadpole:
+		spawn_tadpole(pad)
+		uncaught_tadpole = true
+	elif randi_range(0, 50) < 20:
+		if tadpoles.size() > 0:
+			spawn_snack(pad)
 		
 
-func _on_despawn():
-	tadpole = false
+func spawn_tadpole(pad):
+		new_tadpole = Child_Tadpole.instantiate()
+		new_tadpole.fullgrown = false
+		
+		new_tadpole.position.x = pad.global_position.x + 25
+		new_tadpole.position.y = pad.global_position.y + 25
+		
+		new_tadpole.tadpoles = tadpoles
+		tadpoles.append(new_tadpole)
+		add_child(new_tadpole)
+		
+		new_tadpole.caught.connect(_on_tadpole_caught.bind(new_tadpole))
+		new_tadpole._on_despawn.connect(_on_tadpole_despawn)
+		
+func spawn_snack(pad):
+	var snack = snack_scene.instantiate()
 	
-func _on_caught():
-	tadpole_caught = true
-	Global.tadpole_caught = tadpole_caught
+	snack.position = pad.position
+	snack.rotation = pad.rotation
+	
+	snack.add_to_group("Snacks")
+	
+	add_child(snack)
+	pad.perish.connect(snack._on_lillypad_despawn)
+	snack.eaten.connect(new_tadpole._on_snack_eaten)
+	
+func _on_tadpole_caught(caught_tadpole):
+	uncaught_tadpole = false
+	var index = tadpoles.find(caught_tadpole)
+	if index == 0:
+		caught_tadpole.follow_target = $Player
+	else:
+		caught_tadpole.follow_target = tadpoles[index - 1]
+		
+func _on_tadpole_despawn():
+	uncaught_tadpole = false
+	

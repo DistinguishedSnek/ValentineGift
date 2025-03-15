@@ -62,6 +62,7 @@ height = 68.0
 
 [node name="Player" type="Area2D" groups=["Players"]]
 z_index = 1
+collision_mask = 5
 script = ExtResource("1_phwhr")
 metadata/_edit_group_ = true
 
@@ -71,7 +72,7 @@ sprite_frames = SubResource("SpriteFrames_ky0jy")
 animation = &"Frog idle"
 autoplay = "Frog idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Players"]]
 shape = SubResource("CapsuleShape2D_vr5h2")
 
 [node name="Node2D" type="Node2D" parent="."]
