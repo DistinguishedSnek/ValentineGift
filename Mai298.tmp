@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bw54empo0d58t"]
+[gd_scene load_steps=13 format=4 uid="uid://bw54empo0d58t"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_0pbjb"]
 [ext_resource type="PackedScene" uid="uid://dcum2831n22vl" path="res://Player.tscn" id="1_unbdb"]
@@ -8,24 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ibb5nm2wml06" path="res://Tadpole.tscn" id="5_20a4f"]
 [ext_resource type="AudioStream" uid="uid://bbfbt8cq4ckio" path="res://art/gameover.wav" id="5_l7fe1"]
 [ext_resource type="PackedScene" uid="uid://70u7dbhvfb7i" path="res://Lillypad.tscn" id="6_eh0c8"]
-[ext_resource type="Script" path="res://Snack.gd" id="6_umn6y"]
-[ext_resource type="Script" path="res://lillypad_distribution.gd" id="10_5xw64"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jnsq8"]
-radius = 48.1664
-
-[sub_resource type="PackedScene" id="PackedScene_7n4k4"]
-_bundled = {
-"conn_count": 1,
-"conns": PackedInt32Array(1, 0, 12, 11, 2, 0, 0),
-"editable_instances": [],
-"names": PackedStringArray("Node2D", "script", "sprite", "Snacks", "Area2D", "collision_mask", "CollisionShape2D", "shape", "debug_color", "Sprite2D", "scale", "_on_area_2d_area_entered", "area_entered"),
-"node_count": 4,
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 1073741826, 1, 1, 3, 0, 0, 4, 4, -1, 1, 5, 2, 1, 3, 1, 0, 6, 6, -1, 2, 7, 3, 8, 4, 1, 3, 0, 0, 9, 9, -1, 1, 10, 5, 1, 3),
-"variants": [ExtResource("6_umn6y"), NodePath("Sprite2D"), 5, SubResource("CircleShape2D_jnsq8"), Color(0.657519, 0.515974, 0, 0.42), Vector2(0.5, 0.5)],
-"version": 3
-}
+[ext_resource type="PackedScene" uid="uid://dpjpb5lxerf8h" path="res://Snack.tscn" id="6_sy6e2"]
 
 [sub_resource type="Curve2D" id="Curve2D_lg77u"]
 _data = {
@@ -48,7 +31,7 @@ mob_scene = ExtResource("2_06a30")
 lillypad_scene = ExtResource("6_eh0c8")
 DeathAnim = ExtResource("4_q5n2j")
 Child_Tadpole = ExtResource("5_20a4f")
-snack_scene = SubResource("PackedScene_7n4k4")
+snack_scene = ExtResource("6_sy6e2")
 
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -92,9 +75,10 @@ stream = ExtResource("5_l7fe1")
 position = Vector2(896, 448)
 zoom = Vector2(0.75, 0.75)
 
-[node name="Lillypad_distribution" type="Node2D" parent="."]
-z_index = 1
-script = ExtResource("10_5xw64")
+[node name="IndicatorPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_lg77u")
+
+[node name="MobIndicatorLocation" type="PathFollow2D" parent="IndicatorPath"]
 
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

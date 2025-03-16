@@ -24,10 +24,9 @@ var textures = [
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	texture = 0
+	fullgrown = false
+	player_caught = false
 	$Sprite2D.texture = textures[texture]
-	var main = get_parent()
-	if main.has_signal("snack_eaten"):
-		main.snack_eaten.connect(_on_snack_eaten)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -37,7 +36,6 @@ func _process(delta: float) -> void:
 			position += direction.normalized() * speed * delta
 
 		var tadpole_dir = follow_target.position - position
-		var distance = tadpole_dir.length()
 		var tadpole_angle = tadpole_dir.angle()
 		if tadpole_dir.x > 0:
 			$Sprite2D.flip_v = false
@@ -46,8 +44,8 @@ func _process(delta: float) -> void:
 		rotation = tadpole_angle
 
 func _on_despawn_timer_timeout() -> void:
+	print("Tadpole despawning")
 	despawn.emit()
-	queue_free()
 
 
 func _on_despawn():
@@ -56,6 +54,7 @@ func _on_despawn():
 		if index != -1 and index < tadpoles.size() - 1:
 			tadpoles[index + 1].follow_target = follow_target  # Reassign target
 		tadpoles.erase(self)
+		print("Deleting myself :( ,  ", "My name was: ", name)
 	queue_free()
 
 
@@ -65,35 +64,32 @@ func _on_wiggle_timeout() -> void:
 	rotation = randf_range(-PI/15, PI/15)
 	$Wiggle.wait_time = randf_range(0.2, 0.3)
 	$Wiggle.start()
-	pass # Replace with function body.
 
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Players"):
+	if area.is_in_group("Players") && !player_caught:
 		$DespawnTimer.stop()
 		$Wiggle.stop()
 		player_caught = true
-		if tadpoles.is_empty():
-			follow_target = $Player
-		else:
-			follow_target = tadpoles[-1]
 		caught.emit()
 		
-func _on_snack_eaten():
+func feeding_time():
 	texture += 1
 	match texture:
 		0:
 			scale.x = 1
 			scale.y = 1		
 		1:
-			scale.x = 0.6
-			scale.y = 0.6
+			scale.x = 0.4
+			scale.y = 0.4
 		2:
-			scale.x = 0.75
-			scale.y = 0.75
-		3:
 			scale.x = 0.5
 			scale.y = 0.5
+		3:
+			scale.x = 0.4
+			scale.y = 0.4
 	if texture < 4:
 		$Sprite2D.texture = textures[texture]
-		fullgrown = 1
+		if texture > 2:
+			fullgrown = true
+			print("I'm fullgrown: ", name)

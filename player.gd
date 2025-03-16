@@ -32,9 +32,6 @@ func _ready():
 	charge_bar.max_value = max_charge
 	safe_landing = 0
 	ghost_frog.hide()
-	print("Player is in groups:", get_groups())
-	if not is_in_group("Players"):
-		add_to_group("Players")  # Add it if missing
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -118,9 +115,8 @@ func _on_body_entered(body):
 		
 	elif body.is_in_group("lillypads"):
 		safe_landing += 1
-		print(safe_landing)
 		
-func _on_body_exited(body):
+func _on_body_exited(_body):
 	safe_landing -= 1
 	print(safe_landing)
 	

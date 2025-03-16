@@ -15,16 +15,32 @@ var tadpole_spawn_number
 var new_tadpole
 var tadpoles = []
 var uncaught_tadpole
+var mob_spawn_amount
+var mob_spawnrate_increase
+var mob_minimum_spawnrate
+var mob_path: Path2D
+var indicator_path: Path2D
+var lillypad_spread
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
 	randomize()
+	mob_path = $MobPath
+	mob_path.curve = Curve2D.new()
+	var curve = mob_path.curve
+	curve.clear_points()
+	curve.add_point(Vector2(-100, -100))  # Point 1
+	curve.add_point(Vector2(screen_size.x + 100, -100))  # Point 2
+	curve.add_point(Vector2(screen_size.x + 100, screen_size.y + 100))  # Point 3
+	curve.add_point(Vector2(-100, screen_size.y + 100))  # Point 4
+	curve.add_point(Vector2(-100, - 100))  # Point 5
+	
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
@@ -40,6 +56,7 @@ func game_over() -> void:
 	add_child(Ghost)
 
 func new_game():
+	$StartPosition.position = Vector2(screen_size.x / 2, screen_size.y / 2)
 	score = 0
 	lillypad_count = 0
 	uncaught_tadpole = false
@@ -60,32 +77,18 @@ func new_game():
 	
 
 func _on_mob_timer_timeout() -> void:
-	# Create a new instance of the Mob scene.
-	var mob = mob_scene.instantiate()
-
-	# Choose a random location on Path2D.
-	var mob_spawn_location = $MobPath/MobSpawnLocation
-	mob_spawn_location.progress_ratio = randf()
-
-	# Set the mob's direction perpendicular to the path direction.
-	var direction = mob_spawn_location.rotation + PI / 2
-
-	# Set the mob's position to a random location.
-	mob.position = mob_spawn_location.position
-
-	# Add some randomness to the direction.
-	direction += randf_range(-PI / 4, PI / 4)
-	mob.rotation = direction
-
-	# Choose the velocity for the mob.
-	var velocity = Vector2(randf_range(50.0, 150.0), 0.0)
-	mob.linear_velocity = velocity.rotated(direction)
-
-	# Spawn the mob by adding it to the Main scene.
-	add_child(mob)
+	spawn_mob()
+		
+	if !Global.hardmode:
+		mob_spawn_amount = randf_range(2, 4)
+		mob_spawnrate_increase = float(score) / 100
+		mob_minimum_spawnrate = 1.5
+	else:
+		mob_spawn_amount = randf_range(1.5, 3)
+		mob_spawnrate_increase = score / 50
+		mob_minimum_spawnrate = 1
 	
-	#Reduce mob spawn time by score/10
-	$MobTimer.wait_time = max(2.00 - (float(score) / 100.0), 0.2)  # Minimum 0.1 seconds
+	$MobTimer.wait_time = max(mob_spawn_amount - mob_spawnrate_increase, mob_minimum_spawnrate)
 
 
 func _on_score_timer_timeout() -> void:
@@ -105,7 +108,7 @@ func _on_lilly_pad_spawn_timer_timeout() -> void:
 	# Create a new instance of the Lillypad scene.
 	$LillyPadSpawnTimer.stop()
 		
-	if lillypad_count < 5:
+	if lillypad_count < 7:
 		$LillyPadSpawnTimer.wait_time = randi_range(1, 3) #Next spawn random between 0 and 2 sec
 		tadpole_spawn_number = 0
 		spawn_lillypad()
@@ -135,14 +138,13 @@ func spawn_lillypad() -> void:
 	add_child(pad)
 	lillypad_count += 1
 	
-	if score > 30 && tadpoles[0] == null:
+	if score > 30 && tadpoles.size() == 0:
 		spawn_tadpole(pad)
 	elif tadpole_spawn_number > 40 && !uncaught_tadpole:
 		spawn_tadpole(pad)
 		uncaught_tadpole = true
 	elif randi_range(0, 50) < 20:
-		if tadpoles.size() > 0:
-			spawn_snack(pad)
+		spawn_snack(pad)
 		
 
 func spawn_tadpole(pad):
@@ -153,11 +155,13 @@ func spawn_tadpole(pad):
 		new_tadpole.position.y = pad.global_position.y + 25
 		
 		new_tadpole.tadpoles = tadpoles
-		tadpoles.append(new_tadpole)
 		add_child(new_tadpole)
+		new_tadpole.name = "Tadpole_" + str(tadpoles.size())
+		tadpoles.append(new_tadpole)
+		print("Spawned tadpole: ", new_tadpole)
 		
 		new_tadpole.caught.connect(_on_tadpole_caught.bind(new_tadpole))
-		new_tadpole._on_despawn.connect(_on_tadpole_despawn)
+		new_tadpole.despawn.connect(_on_tadpole_despawn)
 		
 func spawn_snack(pad):
 	var snack = snack_scene.instantiate()
@@ -168,17 +172,63 @@ func spawn_snack(pad):
 	snack.add_to_group("Snacks")
 	
 	add_child(snack)
+	
 	pad.perish.connect(snack._on_lillypad_despawn)
-	snack.eaten.connect(new_tadpole._on_snack_eaten)
+	snack.eaten.connect(_on_snack_eaten.bind(snack))
 	
 func _on_tadpole_caught(caught_tadpole):
 	uncaught_tadpole = false
+	
 	var index = tadpoles.find(caught_tadpole)
+	
 	if index == 0:
 		caught_tadpole.follow_target = $Player
 	else:
 		caught_tadpole.follow_target = tadpoles[index - 1]
-		
+	
+	caught_tadpole.player_caught = true
+	
+	print("Tadpole caught: ", caught_tadpole.name, "    ", "Follow target: ", caught_tadpole.follow_target )
+	
 func _on_tadpole_despawn():
 	uncaught_tadpole = false
 	
+func _on_snack_eaten(snack):
+	var snack_monched = false
+	
+	for tadpole in tadpoles:
+		if !tadpole.fullgrown && tadpole.player_caught:
+			snack_monched = true
+			print("Feeding tadpole: ", tadpole.name)
+			tadpole.feeding_time()
+			print("Consuming snack: ", snack)
+			snack.consumed()
+			break
+	
+	if !snack_monched:
+		print("Splatting snack: ", snack)
+		snack.splat()
+		
+func spawn_mob():
+	var mob = mob_scene.instantiate()
+
+	# Choose a random location on Path2D.
+	var mob_spawn_location = $MobPath/MobSpawnLocation
+	mob_spawn_location.progress_ratio = randf()
+
+	# Set the mob's direction perpendicular to the path direction.
+	var direction = mob_spawn_location.rotation + PI / 2
+
+	# Set the mob's position to a random location.
+	mob.position = mob_spawn_location.position
+
+	# Add some randomness to the direction.
+	direction += randf_range(-PI / 4, PI / 4)
+	mob.rotation = direction
+
+	# Choose the velocity for the mob.
+	var velocity = Vector2(randf_range(50.0, 150.0), 0.0)
+	mob.linear_velocity = velocity.rotated(direction)
+
+	# Spawn the mob by adding it to the Main scene.
+	add_child(mob)

@@ -1,4 +1,8 @@
-extends Label
+# Area2D with Lillypad Count
+extends Area2D
+
+# This property will store the count of lillypads in the area
+var lillypad_count = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -7,7 +11,5 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	#text = "tadpole_number: " + str(Global.tadpole_spawn_number)
+func _process(delta: float) -> void:
 	pass
-	

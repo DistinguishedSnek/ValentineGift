@@ -1,5 +1,7 @@
 extends Node2D
 
+#Todo, add splat function
+
 @export var sprite: Sprite2D
 
 var textures = [
@@ -22,16 +24,22 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_accept"):  # Press Enter or Space
-		print("Simulating collision!")
-		_on_area_2d_area_entered($Area2D)  # Manually call it
+func _process(_delta: float) -> void:
+	pass
 
 
 func _on_lillypad_despawn():
 	queue_free()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Players") && Global.tadpole_caught:
+	if area.is_in_group("Players"):
+		print("Snack being monched")
 		eaten.emit()
-		queue_free()
+
+func consumed():
+	print("Snack consumed")
+	queue_free()
+	
+func splat():
+	print("SPLAT")
+	#Add sprite of splatted food here

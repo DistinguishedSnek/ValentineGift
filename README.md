@@ -2,10 +2,17 @@
  A gift for my gf for valentine, my first ever game
 
 TODO:
-	Tadpole functionality (Half done, snacks)
-		Fix Invalid access to property or key '_on_snack_eaten' on a base object of type 'previously freed'.
+	All babies grow at thesame time X
+	babies size X
+	baby grows even when not followin player X
+	too many enemies at once  X
+	Fix centering of spawn and alignments X
+	spawn lillypads in a grid system
+		At connecting the area signals in lillypad distribution
+	tadpoles behind lillypads
 	Replace enemies
+	add splat
 
 Perhaps: 
-	Add multiple tadpoles following
 	Add deaths for all kids
+	add hopping anim for fullgrown tadpoles

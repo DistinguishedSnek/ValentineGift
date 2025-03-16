@@ -30,6 +30,7 @@ position = Vector2(-45, -42)
 shape = SubResource("CircleShape2D_e4qap")
 debug_color = Color(0.992095, 0, 0.256757, 0.42)
 
+[connection signal="despawn" from="." to="." method="_on_despawn"]
 [connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
 [connection signal="timeout" from="Wiggle" to="." method="_on_wiggle_timeout"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

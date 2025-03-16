@@ -95,6 +95,7 @@ texture_under = ExtResource("8_kuu6v")
 texture_progress = ExtResource("9_6ryev")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = 18.0
 offset_top = -63.0
 offset_right = 58.0
@@ -102,6 +103,7 @@ offset_bottom = -40.0
 script = ExtResource("11_s2dbf")
 
 [node name="Label2" type="Label" parent="."]
+visible = false
 offset_left = 18.0
 offset_top = -48.0
 offset_right = 58.0
@@ -109,6 +111,7 @@ offset_bottom = -25.0
 script = ExtResource("12_pl4d8")
 
 [node name="Label3" type="Label" parent="."]
+visible = false
 offset_left = 17.0
 offset_top = -94.0
 offset_right = 57.0

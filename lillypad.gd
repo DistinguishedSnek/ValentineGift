@@ -40,7 +40,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process_(_delta: float) -> void:
 	if OS.is_debug_build():
 		$TimeTracker.text = str(int(current_timer.get_time_left()))
 
