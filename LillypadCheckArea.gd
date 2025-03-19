@@ -1,15 +1,17 @@
 # Area2D with Lillypad Count
 extends Area2D
 
-# This property will store the count of lillypads in the area
 var lillypad_count = 0
 
+func _ready():
+	connect("area_entered", Callable(self, "_on_area_entered"))
+	connect("area_exited", Callable(self, "_on_area_exited"))
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func _on_area_entered(area):
+	print("Area entered:", area.name)
+	if area.is_in_group("lillypads"):
+		lillypad_count += 1
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _on_area_exited(area):
+	if area.is_in_group("lillypads"):
+		lillypad_count -= 1

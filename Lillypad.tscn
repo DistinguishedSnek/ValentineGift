@@ -12,11 +12,8 @@ script = ExtResource("1_j7jwh")
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["lillypads"]]
 texture = ExtResource("1_lo56a")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["lillypads"]]
 shape = SubResource("CircleShape2D_m803r")
-
-[node name="LillyPadDeteriorate" type="Timer" parent="."]
-wait_time = 1.225
 
 [node name="LillyPadPerish" type="Timer" parent="."]
 
@@ -26,5 +23,13 @@ offset_top = 29.0
 offset_right = 79.0
 offset_bottom = 52.0
 
-[connection signal="timeout" from="LillyPadDeteriorate" to="." method="_on_lilly_pad_deteriorate_timeout"]
+[node name="LillyPadDeteriorate" type="Timer" parent="."]
+wait_time = 1.225
+
+[node name="Area2D" type="Area2D" parent="." groups=["lillypads"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=["lillypads"]]
+shape = SubResource("CircleShape2D_m803r")
+
 [connection signal="timeout" from="LillyPadPerish" to="." method="_on_lilly_pad_perish_timeout"]
+[connection signal="timeout" from="LillyPadDeteriorate" to="." method="_on_lilly_pad_deteriorate_timeout"]

@@ -21,6 +21,7 @@ signal perish
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	add_to_group("lillypads")
 	randomize()
 	var random_number = randi_range(0, 100)
 	if random_number < 40:

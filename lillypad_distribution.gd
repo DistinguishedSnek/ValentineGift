@@ -8,12 +8,12 @@ extends Node2D
 #Else false
 
 var screensize
-var size
+var size : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var screensize = get_viewport().size
-	var size : Vector2
+	screensize = get_viewport().size
+	size
 	size.x = screensize.x / 3
 	size.y = screensize.y / 2
 
@@ -30,27 +30,20 @@ func _ready() -> void:
 			shape.size = size
 			collision_shape.shape = shape
 			collision_shape.debug_color = Color(x / 3.0, y / 2.0, (x + y) / 12.0, 0.25)
-			area.add_child(collision_shape)
-			location.add_child(area)
+			
 			location.position.y = y * size.y + size.y / 2
 			location.position.x = x * size.x + size.x / 2
 			print(location.position)
-			add_child(location)
+			location.name = "location%d%d" % [x, y]
 			
-			area.lillypad_count += 1
 			print("Area has lillypad? ", lillypad_count)
+			
+			area.add_child(collision_shape)
+			location.add_child(area)
+			add_child(location)
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
-
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Lillypads"):
-		print("Lillypad_in_area")
-		area.lillypad_count += 1
-
-func _on_area_2d_area_exited(area: Area2D) -> void:
-	if area.is_in_group("Lillypads"):
-		print("Lillypad_left_area")
-		area.lillypad_count -= 1

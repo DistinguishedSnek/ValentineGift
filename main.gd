@@ -77,7 +77,7 @@ func new_game():
 	
 
 func _on_mob_timer_timeout() -> void:
-	spawn_mob()
+	#spawn_mob()
 		
 	if !Global.hardmode:
 		mob_spawn_amount = randf_range(2, 4)
