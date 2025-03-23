@@ -124,10 +124,34 @@ func _on_lilly_pad_spawn_timer_timeout() -> void:
 func spawn_lillypad() -> void:
 	var pad = lillypad_scene.instantiate()
 	
-	var x_pos = randf_range(50, screen_size.x - 50)
-	var y_pos = randf_range(50, screen_size.y - 50)
+	var x_pos
+	var y_pos
 	
-	pad.position = Vector2(x_pos, y_pos)
+	var location
+	var area
+	var collision_shape
+	var found = false
+	
+	for x in range(3):
+		for y in range(2):
+			location = $Lillypad_distribution.get_node_or_null("location%d%d" % [x, y])
+			area = location.get_node_or_null("area%d%d" % [x, y])
+			collision_shape = area.get_node_or_null("collision_shape%d%d" % [x, y])
+			collision_shape = $Lillypad_distribution.get_node("location%d%d" % [x, y]).get_node("area%d%d" % [x, y]).get_node("collision_shape%d%d" % [x, y])
+			
+			if area.lillypad_count < 1:
+				x_pos = location.position.x + randf_range(- collision_shape.shape.size.x / 2, collision_shape.shape.size.x / 2)
+				y_pos = location.position.y + randf_range(- collision_shape.shape.size.y / 2, collision_shape.shape.size.y / 2)
+				#print("Count below 1, X pos: ", x_pos, "		Y pos: ", y_pos, "		Location: ", location.position, "		Collision shape: ", collision_shape.shape.size)
+				found = true
+				break
+			else:
+				x_pos = randf_range(50, screen_size.x - 50)
+				y_pos = randf_range(50, screen_size.y - 50)
+			
+		if found:
+			break
+	pad.position = Vector2(x_pos, y_pos).clamp(Vector2(50, 50), Vector2(screen_size.x - 50, screen_size.y - 50))
 
 	# Add some randomness to the direction.
 	pad.rotation = randf_range(-PI, PI)

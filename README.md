@@ -7,8 +7,8 @@ TODO:
 	baby grows even when not followin player X
 	too many enemies at once  X
 	Fix centering of spawn and alignments X
-	spawn lillypads in a grid system
-		At connecting the area signals in lillypad distribution
+	spawn lillypads in a grid system X
+		At connecting the area signals in lillypad distribution X
 	tadpoles behind lillypads
 	Replace enemies
 	add splat

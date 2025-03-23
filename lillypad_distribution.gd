@@ -13,7 +13,6 @@ var size : Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screensize = get_viewport().size
-	size
 	size.x = screensize.x / 3
 	size.y = screensize.y / 2
 
@@ -35,6 +34,8 @@ func _ready() -> void:
 			location.position.x = x * size.x + size.x / 2
 			print(location.position)
 			location.name = "location%d%d" % [x, y]
+			area.name = "area%d%d" % [x, y]
+			collision_shape.name = "collision_shape%d%d" % [x, y]
 			
 			print("Area has lillypad? ", lillypad_count)
 			
