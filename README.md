@@ -9,10 +9,5 @@ TODO:
 	Fix centering of spawn and alignments X
 	spawn lillypads in a grid system X
 		At connecting the area signals in lillypad distribution X
-	tadpoles behind lillypads
-	Replace enemies
-	add splat
-
-Perhaps: 
-	Add deaths for all kids
-	add hopping anim for fullgrown tadpoles
+	tadpoles behind lillypads X
+	Replace enemies X

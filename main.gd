@@ -36,6 +36,7 @@ func _ready() -> void:
 	curve.add_point(Vector2(-100, screen_size.y + 100))  # Point 4
 	curve.add_point(Vector2(-100, - 100))  # Point 5
 	
+	
 
 
 
@@ -77,7 +78,7 @@ func new_game():
 	
 
 func _on_mob_timer_timeout() -> void:
-	#spawn_mob()
+	spawn_mob()
 		
 	if !Global.hardmode:
 		mob_spawn_amount = randf_range(2, 4)

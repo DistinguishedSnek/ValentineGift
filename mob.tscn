@@ -1,52 +1,80 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvoc3lecv38h"]
+[gd_scene load_steps=14 format=3 uid="uid://cvoc3lecv38h"]
 
-[ext_resource type="Texture2D" uid="uid://c8bcwunyq0r5w" path="res://art/enemyFlyingAlt_1.png" id="1_i0c1l"]
 [ext_resource type="Script" path="res://mob.gd" id="1_ql4vy"]
-[ext_resource type="Texture2D" uid="uid://daywtshma1v7v" path="res://art/enemyFlyingAlt_2.png" id="2_7ucv6"]
-[ext_resource type="Texture2D" uid="uid://cxxyxvygpiqcu" path="res://art/enemySwimming_1.png" id="3_24d78"]
-[ext_resource type="Texture2D" uid="uid://cherykbk8h7r5" path="res://art/enemySwimming_2.png" id="4_arsgy"]
-[ext_resource type="Texture2D" uid="uid://qs6ohts1gcaq" path="res://art/enemyWalking_1.png" id="5_xh73q"]
-[ext_resource type="Texture2D" uid="uid://cj48ir8ns7713" path="res://art/enemyWalking_2.png" id="6_cbxkm"]
+[ext_resource type="Texture2D" uid="uid://cwrv3dpoql7st" path="res://art/Bird.png" id="2_cm5ty"]
+[ext_resource type="Texture2D" uid="uid://cvx60pei333lb" path="res://art/Fimsh.png" id="2_yambf"]
+[ext_resource type="Texture2D" uid="uid://3ryc10xb5on4" path="res://art/Spooder.png" id="5_qf7yo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enq8d"]
+atlas = ExtResource("2_yambf")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56gjp"]
+atlas = ExtResource("2_yambf")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rg1rs"]
+atlas = ExtResource("2_cm5ty")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwvq5"]
+atlas = ExtResource("2_cm5ty")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ii70g"]
+atlas = ExtResource("2_cm5ty")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk1h1"]
+atlas = ExtResource("5_qf7yo")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_viatj"]
+atlas = ExtResource("5_qf7yo")
+region = Rect2(80, 0, 80, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vtg6u"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_i0c1l")
+"texture": SubResource("AtlasTexture_enq8d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_7ucv6")
+"texture": SubResource("AtlasTexture_56gjp")
 }],
 "loop": true,
-"name": &"fly",
-"speed": 3.0
+"name": &"Swim",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_24d78")
+"texture": SubResource("AtlasTexture_rg1rs")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_arsgy")
+"texture": SubResource("AtlasTexture_mwvq5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ii70g")
 }],
 "loop": true,
-"name": &"swim",
-"speed": 3.0
+"name": &"flyBird",
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_xh73q")
+"texture": SubResource("AtlasTexture_fk1h1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_cbxkm")
+"texture": SubResource("AtlasTexture_viatj")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 3.0
+"speed": 6.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7clox"]
-radius = 36.0
-height = 98.0
+radius = 27.0
+height = 76.0
 
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
 collision_mask = 0
@@ -58,8 +86,7 @@ metadata/_edit_group_ = true
 rotation = -1.5708
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_vtg6u")
-animation = &"walk"
-frame_progress = 0.785506
+animation = &"Swim"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_7clox")
