@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_e4qap"]
 radius = 68.0661
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite") groups=["Tadpoles"]]
 script = ExtResource("1_i7lml")
 sprite = NodePath("Sprite2D")
 

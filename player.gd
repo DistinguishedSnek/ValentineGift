@@ -143,3 +143,7 @@ func _on_start_timer_timeout() -> void:
 	charging = false
 	mouse_enable = true
 	$StartTimer.stop()
+
+
+func _on_main_newgame() -> void:
+	safe_landing = 0

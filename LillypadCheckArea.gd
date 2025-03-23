@@ -10,7 +10,8 @@ func _ready():
 	add_child(label)
 
 func _process(_delta: float) -> void:
-	label.text = "Lillypads: " + str(lillypad_count)
+	#label.text = "Lillypads: " + str(lillypad_count)
+	pass
 	
 func _on_area_entered(area):
 	if area.is_in_group("lillypads"):

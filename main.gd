@@ -22,6 +22,8 @@ var mob_path: Path2D
 var indicator_path: Path2D
 var lillypad_spread
 
+signal newgame
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
@@ -52,6 +54,7 @@ func game_over() -> void:
 	$HUD.show_game_over()
 	$Music.stop()
 	$DeathSound.play()
+	tadpoles.clear()
 	var Ghost = DeathAnim.instantiate()
 	Ghost.global_position = $Player.global_position
 	add_child(Ghost)
@@ -63,7 +66,10 @@ func new_game():
 	uncaught_tadpole = false
 	get_tree().call_group("mobs", "queue_free")
 	get_tree().call_group("Lillypads", "queue_free")
+	get_tree().call_group("Tadpoles", "queue_free")
+	get_tree().call_group("Snacks", "queue_free")
 	$Music.play()
+	newgame.emit
 	$Player.start($StartPosition.position)
 	
 	var startpad = lillypad_scene.instantiate()
@@ -180,6 +186,9 @@ func spawn_tadpole(pad):
 		new_tadpole.position.y = pad.global_position.y + 25
 		
 		new_tadpole.tadpoles = tadpoles
+		
+		new_tadpole.add_to_group("Tadpoles")
+		
 		add_child(new_tadpole)
 		new_tadpole.name = "Tadpole_" + str(tadpoles.size())
 		tadpoles.append(new_tadpole)
