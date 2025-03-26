@@ -4,10 +4,13 @@ extends CanvasLayer
 signal start_game
 var hardmode
 var godmode
+var godmode_choice = false
+var three_tadpoles
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
+	$GodMode.hide()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,7 +33,8 @@ func show_game_over():
 	await get_tree().create_timer(1.0).timeout
 	$StartButton.show()
 	$HardMode.show()
-	$GodMode.show()
+	if three_tadpoles:
+		$GodMode.show()
 	
 func update_score(score):
 	$ScoreLabel.text = str(score)
@@ -64,3 +68,7 @@ func _on_god_mode_pressed() -> void:
 	Global.hardmode = false
 	Global.godmode = true
 	start_game.emit()
+
+
+func _on_main_three_tadpoles() -> void:
+	three_tadpoles = true # Replace with function body.

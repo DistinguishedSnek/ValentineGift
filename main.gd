@@ -22,6 +22,8 @@ var mob_path: Path2D
 var indicator_path: Path2D
 var lillypad_spread
 
+signal three_tadpoles
+
 signal newgame
 
 # Called when the node enters the scene tree for the first time.
@@ -37,6 +39,7 @@ func _ready() -> void:
 	curve.add_point(Vector2(screen_size.x + 100, screen_size.y + 100))  # Point 3
 	curve.add_point(Vector2(-100, screen_size.y + 100))  # Point 4
 	curve.add_point(Vector2(-100, - 100))  # Point 5
+	
 	
 	
 
@@ -92,8 +95,11 @@ func _on_mob_timer_timeout() -> void:
 		mob_minimum_spawnrate = 1.5
 	else:
 		mob_spawn_amount = randf_range(1.5, 3)
-		mob_spawnrate_increase = score / 50
+		mob_spawnrate_increase = float(score) / 50
 		mob_minimum_spawnrate = 1
+	
+	if score > 60 || tadpoles.size() > 1:
+		mob_minimum_spawnrate-= 0.5
 	
 	$MobTimer.wait_time = max(mob_spawn_amount - mob_spawnrate_increase, mob_minimum_spawnrate)
 
@@ -231,6 +237,8 @@ func _on_snack_eaten(snack):
 	var snack_monched = false
 	
 	for tadpole in tadpoles:
+		if tadpoles.size() > 2 && tadpoles[2].fullgrown:
+			three_tadpoles.emit
 		if !tadpole.fullgrown && tadpole.player_caught:
 			snack_monched = true
 			print("Feeding tadpole: ", tadpole.name)

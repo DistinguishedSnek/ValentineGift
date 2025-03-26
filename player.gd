@@ -19,6 +19,8 @@ var safe_landing := 0
 var mouse_enable := false
 var viewdirection
 var ghostfriend_distance
+var jumptimer = false
+var hoptimer = true
 
 @onready var charge_bar: TextureProgressBar = $Node2D/TextureProgressBar
 @onready var ghost_frog: Sprite2D = $Sprite2D
@@ -66,11 +68,12 @@ func _process(delta):
 		
 		
 		if distance == Vector2.ZERO:
+			jumptimer = false
 			if safe_landing == 0:
 				if !Global.godmode:
 					death.emit()
 				
-			if Input.is_action_pressed("jump"):
+			if Input.is_action_pressed("jump") && hoptimer:
 				if charging == false:
 					charging = true
 					jump_prep.emit()
@@ -88,12 +91,17 @@ func _process(delta):
 				charging = false
 				distance = ghostfriend_distance
 				new_position = new_position.clamp(Vector2.ZERO, screen_size)
+				$Timer.start()
 				jumping.emit()
 				
 		if distance != Vector2.ZERO:
+			if Input.is_action_just_pressed("jump") && jumptimer:
+				new_position = position
+				$Timer2.start()
 			position = position.move_toward(new_position, speed * delta)
 			if position == new_position:
 				distance = Vector2.ZERO
+				hoptimer = false
 			position = position.clamp(Vector2.ZERO, screen_size)
 
 func _jump(charge_start: float, charge_end: float):
@@ -147,3 +155,11 @@ func _on_start_timer_timeout() -> void:
 
 func _on_main_newgame() -> void:
 	safe_landing = 0
+
+
+func _on_timer_timeout() -> void:
+	jumptimer = true # Replace with function body.
+
+
+func _on_timer_2_timeout() -> void:
+	hoptimer = true # Replace with function body.
