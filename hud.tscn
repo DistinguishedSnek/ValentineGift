@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bot0fif46ilfy"]
+[gd_scene load_steps=6 format=3 uid="uid://bot0fif46ilfy"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_xr2km"]
 [ext_resource type="FontFile" uid="uid://c76geq5r5mlis" path="res://fonts/Xolonium-Regular.ttf" id="2_vc3xm"]
+[ext_resource type="AudioStream" uid="uid://dmnw8rnpd4cs2" path="res://Sound/ringtones-zelda-1.mp3" id="3_f2xb6"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_0jdln"]
 action = &"start_game"
@@ -102,6 +103,9 @@ text = "Godmode
 [node name="MessageTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="GodMode_Unlocked" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_f2xb6")
 
 [connection signal="start_game" from="." to="." method="_on_start_game"]
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

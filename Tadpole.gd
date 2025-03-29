@@ -89,7 +89,10 @@ func feeding_time():
 			scale.x = 0.4
 			scale.y = 0.4
 	if texture < 4:
+		$FoodTime.play()
+		$GrowSound.play()
 		$Sprite2D.texture = textures[texture]
 		if texture > 2:
 			fullgrown = true
 			print("I'm fullgrown: ", name)
+				

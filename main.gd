@@ -72,7 +72,6 @@ func new_game():
 	get_tree().call_group("Tadpoles", "queue_free")
 	get_tree().call_group("Snacks", "queue_free")
 	$Music.play()
-	newgame.emit
 	$Player.start($StartPosition.position)
 	
 	var startpad = lillypad_scene.instantiate()
@@ -105,7 +104,10 @@ func _on_mob_timer_timeout() -> void:
 
 
 func _on_score_timer_timeout() -> void:
-	score += 1
+	if !Global.hardmode:
+		score += 1
+	else:
+		score += 2
 	$HUD.update_score(score)
 
 
@@ -211,7 +213,8 @@ func spawn_snack(pad):
 	
 	snack.add_to_group("Snacks")
 	
-	add_child(snack)
+	add_child(snack) #TODO
+	
 	
 	pad.perish.connect(snack._on_lillypad_despawn)
 	snack.eaten.connect(_on_snack_eaten.bind(snack))
@@ -236,9 +239,17 @@ func _on_tadpole_despawn():
 func _on_snack_eaten(snack):
 	var snack_monched = false
 	
+	var count = 0
+	if tadpoles.size() > 1:
+		for tadpole in tadpoles:
+			if tadpole.fullgrown: #Error here
+				count += 1
+				print("Tadpole count: ", count)
+	if count > 1:
+		three_tadpoles.emit()
+		print("THREE_TADPOLES")
+		
 	for tadpole in tadpoles:
-		if tadpoles.size() > 2 && tadpoles[2].fullgrown:
-			three_tadpoles.emit
 		if !tadpole.fullgrown && tadpole.player_caught:
 			snack_monched = true
 			print("Feeding tadpole: ", tadpole.name)

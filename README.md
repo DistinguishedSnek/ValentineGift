@@ -15,8 +15,8 @@ TODO:
 Add difficulty increase (mobspawns) after score = 60 x
 Add godmode after 3 fully grown babies (+ a popup, stays as long as the game runs) 
 Add sound effects
-	dropdown
-	monch
-	tadpole catch/grow
-	godmode unlocked
+	dropdown 
+	monch x
+	tadpole catch/grow x
+	godmode unlocked X
 Reward for getting far in hardmode??

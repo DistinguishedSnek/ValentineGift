@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dcum2831n22vl"]
+[gd_scene load_steps=17 format=3 uid="uid://dcum2831n22vl"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_phwhr"]
 [ext_resource type="Texture2D" uid="uid://dgn5aioca1rs1" path="res://art/Frog 16x16 base.png" id="2_2njfh"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://label.gd" id="11_s2dbf"]
 [ext_resource type="Script" path="res://label_2.gd" id="12_pl4d8"]
 [ext_resource type="Script" path="res://label_3.gd" id="13_cge57"]
+[ext_resource type="AudioStream" uid="uid://b3v4i5rg0wowm" path="res://Sound/land2-43790.mp3" id="14_7ckts"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ky0jy"]
 animations = [{
@@ -130,8 +131,19 @@ texture = ExtResource("5_usoi8")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="Timer2" type="Timer" parent="."]
+[node name="TimerHop" type="Timer" parent="."]
 wait_time = 0.2
+
+[node name="Drop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_7ckts")
+bus = &"New Bus 2"
+
+[node name="Drop2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_7ckts")
+bus = &"New Bus 3"
+
+[node name="Tester" type="Timer" parent="."]
+wait_time = 3.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
@@ -142,4 +154,5 @@ wait_time = 0.2
 [connection signal="jumping" from="." to="Label" method="_on_player_jumping"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="timeout" from="TimerHop" to="." method="_on_timer_Hop_timeout"]
+[connection signal="timeout" from="Tester" to="." method="_on_tester_timeout"]

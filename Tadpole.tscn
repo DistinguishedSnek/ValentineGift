@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://ibb5nm2wml06"]
+[gd_scene load_steps=7 format=3 uid="uid://ibb5nm2wml06"]
 
 [ext_resource type="Script" path="res://Tadpole.gd" id="1_i7lml"]
 [ext_resource type="Texture2D" uid="uid://4ysvi7u8q27s" path="res://art/Tadpole0.png" id="2_yjq04"]
+[ext_resource type="AudioStream" uid="uid://rim1xolsq02i" path="res://Sound/nom-101089.mp3" id="3_v1h6f"]
+[ext_resource type="AudioStream" uid="uid://bj1gc2og2ako" path="res://Sound/nsmb_power-up.mp3" id="4_bseeg"]
+[ext_resource type="AudioStream" uid="uid://ir4f7diqrdbb" path="res://Sound/frog_quak-81741.mp3" id="5_fsbbk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e4qap"]
 radius = 68.0661
@@ -29,6 +32,17 @@ collision_mask = 5
 position = Vector2(-45, -42)
 shape = SubResource("CircleShape2D_e4qap")
 debug_color = Color(0.992095, 0, 0.256757, 0.42)
+
+[node name="FoodTime" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_v1h6f")
+
+[node name="GrowSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_bseeg")
+bus = &"Master Copy"
+
+[node name="CaughtAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_fsbbk")
+bus = &"New Bus"
 
 [connection signal="despawn" from="." to="." method="_on_despawn"]
 [connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

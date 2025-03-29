@@ -4,8 +4,7 @@ extends CanvasLayer
 signal start_game
 var hardmode
 var godmode
-var godmode_choice = false
-var three_tadpoles
+var three_tadpoles = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -71,4 +70,8 @@ func _on_god_mode_pressed() -> void:
 
 
 func _on_main_three_tadpoles() -> void:
+	if three_tadpoles == false:
+		$GodMode_Unlocked.play()
 	three_tadpoles = true # Replace with function body.
+	print("THREE_TADPOLES_RESPONSE")
+	

@@ -34,6 +34,7 @@ func _ready():
 	charge_bar.max_value = max_charge
 	safe_landing = 0
 	ghost_frog.hide()
+	$Tester.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,6 +43,7 @@ func _process(delta):
 		ghost_frog.hide()
 	
 	if mouse_enable == false:
+		#print("Entered mouse_enabled")
 		pass
 	else:
 		if distance != Vector2.ZERO:
@@ -68,12 +70,14 @@ func _process(delta):
 		
 		
 		if distance == Vector2.ZERO:
+			#print("Entered zero distance: ", distance)
 			jumptimer = false
 			if safe_landing == 0:
 				if !Global.godmode:
 					death.emit()
 				
 			if Input.is_action_pressed("jump") && hoptimer:
+				#print("Entered jumping, hoptimer")
 				if charging == false:
 					charging = true
 					jump_prep.emit()
@@ -88,6 +92,7 @@ func _process(delta):
 					ghost_frog.show()
 					
 			if Input.is_action_just_released("jump"):
+				#print("Entered jump_finish")
 				charging = false
 				distance = ghostfriend_distance
 				new_position = new_position.clamp(Vector2.ZERO, screen_size)
@@ -95,13 +100,20 @@ func _process(delta):
 				jumping.emit()
 				
 		if distance != Vector2.ZERO:
+			var dropped = false
+			#print("Entered distance =/= 0: ", distance)
 			if Input.is_action_just_pressed("jump") && jumptimer:
+				print("Entered drop, jumptimer: ", jumptimer)
 				new_position = position
-				$Timer2.start()
+				$Drop.play()
+				dropped = true
+				$TimerHop.start()
+				hoptimer = false
 			position = position.move_toward(new_position, speed * delta)
 			if position == new_position:
 				distance = Vector2.ZERO
-				hoptimer = false
+				if dropped == false:
+					$Drop2.play()
 			position = position.clamp(Vector2.ZERO, screen_size)
 
 func _jump(charge_start: float, charge_end: float):
@@ -120,13 +132,15 @@ func _on_body_entered(body):
 	if body.is_in_group("mobs"):
 		if !Global.godmode:
 			death.emit()
+			safe_landing += 1
 		
 	elif body.is_in_group("lillypads"):
 		safe_landing += 1
 		
-func _on_body_exited(_body):
-	safe_landing -= 1
-	print(safe_landing)
+func _on_body_exited(body):
+	if body.is_in_group("lillypads"):
+		safe_landing -= 1
+		print(safe_landing)
 	
 func start(pos):
 	position = pos
@@ -139,13 +153,13 @@ func start(pos):
 
 
 func _on_death() -> void:
+	$CollisionShape2D.set_deferred("disabled", true)
 	hide() # Player disappears after being hit.
 	distance = Vector2.ZERO
 	mouse_enable = false
 	safe_landing = 0
 	hit.emit()
 	# Must be deferred as we can't change physics properties on a physics callback.
-	$CollisionShape2D.set_deferred("disabled", true)
 
 func _on_start_timer_timeout() -> void:
 	charging = false
@@ -161,5 +175,10 @@ func _on_timer_timeout() -> void:
 	jumptimer = true # Replace with function body.
 
 
-func _on_timer_2_timeout() -> void:
+func _on_timer_Hop_timeout() -> void:
 	hoptimer = true # Replace with function body.
+
+
+func _on_tester_timeout() -> void:
+	#print("Distance: ", distance, )
+	pass
