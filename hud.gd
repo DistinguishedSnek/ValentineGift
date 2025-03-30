@@ -73,5 +73,4 @@ func _on_main_three_tadpoles() -> void:
 	if three_tadpoles == false:
 		$GodMode_Unlocked.play()
 	three_tadpoles = true # Replace with function body.
-	print("THREE_TADPOLES_RESPONSE")
 	

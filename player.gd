@@ -103,7 +103,6 @@ func _process(delta):
 			var dropped = false
 			#print("Entered distance =/= 0: ", distance)
 			if Input.is_action_just_pressed("jump") && jumptimer:
-				print("Entered drop, jumptimer: ", jumptimer)
 				new_position = position
 				$Drop.play()
 				dropped = true
@@ -132,18 +131,19 @@ func _on_body_entered(body):
 	if body.is_in_group("mobs"):
 		if !Global.godmode:
 			death.emit()
-			safe_landing += 1
 		
 	elif body.is_in_group("lillypads"):
 		safe_landing += 1
+		print("Body enter, Safe_Landing: ", safe_landing)
 		
 func _on_body_exited(body):
 	if body.is_in_group("lillypads"):
 		safe_landing -= 1
-		print(safe_landing)
+		print("Body exit, Safe_Landing: ", safe_landing)
 	
 func start(pos):
 	position = pos
+	safe_landing = 0
 	show()
 	mouse_enable = false
 	$CollisionShape2D.disabled = false
@@ -165,10 +165,6 @@ func _on_start_timer_timeout() -> void:
 	charging = false
 	mouse_enable = true
 	$StartTimer.stop()
-
-
-func _on_main_newgame() -> void:
-	safe_landing = 0
 
 
 func _on_timer_timeout() -> void:

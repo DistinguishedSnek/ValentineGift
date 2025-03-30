@@ -55,6 +55,7 @@ func _on_despawn():
 			tadpoles[index + 1].follow_target = follow_target  # Reassign target
 		tadpoles.erase(self)
 		print("Deleting myself :( ,  ", "My name was: ", name)
+	remove_from_group("Tadpoles")
 	queue_free()
 
 

@@ -96,7 +96,6 @@ position = Vector2(896, 448)
 z_index = -1
 script = ExtResource("10_5xw64")
 
-[connection signal="newgame" from="." to="Player" method="_on_main_newgame"]
 [connection signal="three_tadpoles" from="." to="HUD" method="_on_main_three_tadpoles"]
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

@@ -42,12 +42,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process_(_delta: float) -> void:
-	if OS.is_debug_build():
-		$TimeTracker.text = str(int(current_timer.get_time_left()))
-
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	queue_free()
-
+	pass
 
 func _on_lilly_pad_deteriorate_timeout() -> void:
 	$Sprite2D.texture = textures_deteriorated[variant] # Replace with function body.
@@ -59,6 +54,7 @@ func _on_lilly_pad_deteriorate_timeout() -> void:
 
 func _on_lilly_pad_perish_timeout() -> void:
 	perish.emit()
+	remove_from_group("lillypads")
 	queue_free() # Replace with function body.
 	
 	

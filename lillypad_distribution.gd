@@ -24,7 +24,6 @@ func _ready() -> void:
 			area.set_script(script)
 			var collision_shape = CollisionShape2D.new()
 			var shape = RectangleShape2D.new()
-			var lillypad_count = 0
 			
 			shape.size = size
 			collision_shape.shape = shape
@@ -32,12 +31,9 @@ func _ready() -> void:
 			
 			location.position.y = y * size.y + size.y / 2
 			location.position.x = x * size.x + size.x / 2
-			print(location.position)
 			location.name = "location%d%d" % [x, y]
 			area.name = "area%d%d" % [x, y]
 			collision_shape.name = "collision_shape%d%d" % [x, y]
-			
-			print("Area has lillypad? ", lillypad_count)
 			
 			area.add_child(collision_shape)
 			location.add_child(area)

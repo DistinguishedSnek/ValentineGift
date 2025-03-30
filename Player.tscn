@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dcum2831n22vl"]
+[gd_scene load_steps=14 format=3 uid="uid://dcum2831n22vl"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_phwhr"]
 [ext_resource type="Texture2D" uid="uid://dgn5aioca1rs1" path="res://art/Frog 16x16 base.png" id="2_2njfh"]
@@ -10,9 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bhk7hhfud23nw" path="res://art/Arrow outline.png" id="8_kuu6v"]
 [ext_resource type="Texture2D" uid="uid://bwtv50u2qyrth" path="res://art/Arrow Colouring.png" id="9_6ryev"]
 [ext_resource type="Script" path="res://texture_progress_bar.gd" id="10_4nv6b"]
-[ext_resource type="Script" path="res://label.gd" id="11_s2dbf"]
-[ext_resource type="Script" path="res://label_2.gd" id="12_pl4d8"]
-[ext_resource type="Script" path="res://label_3.gd" id="13_cge57"]
 [ext_resource type="AudioStream" uid="uid://b3v4i5rg0wowm" path="res://Sound/land2-43790.mp3" id="14_7ckts"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ky0jy"]
@@ -95,30 +92,6 @@ value = 100.0
 texture_under = ExtResource("8_kuu6v")
 texture_progress = ExtResource("9_6ryev")
 
-[node name="Label" type="Label" parent="."]
-visible = false
-offset_left = 18.0
-offset_top = -63.0
-offset_right = 58.0
-offset_bottom = -40.0
-script = ExtResource("11_s2dbf")
-
-[node name="Label2" type="Label" parent="."]
-visible = false
-offset_left = 18.0
-offset_top = -48.0
-offset_right = 58.0
-offset_bottom = -25.0
-script = ExtResource("12_pl4d8")
-
-[node name="Label3" type="Label" parent="."]
-visible = false
-offset_left = 17.0
-offset_top = -94.0
-offset_right = 57.0
-offset_bottom = -71.0
-script = ExtResource("13_cge57")
-
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 0.2
 
@@ -149,9 +122,7 @@ wait_time = 3.0
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
 [connection signal="death" from="." to="." method="_on_death"]
 [connection signal="jump_prep" from="." to="Node2D" method="_on_player_jump_prep"]
-[connection signal="jump_prep" from="." to="Label2" method="_on_player_jump_prep"]
 [connection signal="jumping" from="." to="Node2D" method="_on_player_jumping"]
-[connection signal="jumping" from="." to="Label" method="_on_player_jumping"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="TimerHop" to="." method="_on_timer_Hop_timeout"]

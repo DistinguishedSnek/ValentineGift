@@ -18,12 +18,6 @@ shape = SubResource("CircleShape2D_m803r")
 
 [node name="LillyPadPerish" type="Timer" parent="."]
 
-[node name="TimeTracker" type="Label" parent="."]
-offset_left = 39.0
-offset_top = 29.0
-offset_right = 79.0
-offset_bottom = 52.0
-
 [node name="LillyPadDeteriorate" type="Timer" parent="."]
 wait_time = 1.225
 

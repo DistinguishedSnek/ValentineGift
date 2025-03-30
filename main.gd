@@ -24,8 +24,6 @@ var lillypad_spread
 
 signal three_tadpoles
 
-signal newgame
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport().size
@@ -104,10 +102,12 @@ func _on_mob_timer_timeout() -> void:
 
 
 func _on_score_timer_timeout() -> void:
-	if !Global.hardmode:
-		score += 1
-	else:
+	if Global.hardmode:
 		score += 2
+	elif Global.godmode:
+		score += 0
+	else:
+		score += 1
 	$HUD.update_score(score)
 
 
@@ -200,7 +200,6 @@ func spawn_tadpole(pad):
 		add_child(new_tadpole)
 		new_tadpole.name = "Tadpole_" + str(tadpoles.size())
 		tadpoles.append(new_tadpole)
-		print("Spawned tadpole: ", new_tadpole)
 		
 		new_tadpole.caught.connect(_on_tadpole_caught.bind(new_tadpole))
 		new_tadpole.despawn.connect(_on_tadpole_despawn)
@@ -213,7 +212,7 @@ func spawn_snack(pad):
 	
 	snack.add_to_group("Snacks")
 	
-	add_child(snack) #TODO
+	add_child(snack)
 	
 	
 	pad.perish.connect(snack._on_lillypad_despawn)
@@ -244,24 +243,20 @@ func _on_snack_eaten(snack):
 		for tadpole in tadpoles:
 			if tadpole.fullgrown: #Error here
 				count += 1
-				print("Tadpole count: ", count)
 	if count > 1:
 		three_tadpoles.emit()
-		print("THREE_TADPOLES")
 		
 	for tadpole in tadpoles:
 		if !tadpole.fullgrown && tadpole.player_caught:
 			snack_monched = true
-			print("Feeding tadpole: ", tadpole.name)
 			tadpole.feeding_time()
-			print("Consuming snack: ", snack)
 			snack.consumed()
 			break
 	
 	if !snack_monched:
-		print("Splatting snack: ", snack)
 		snack.splat()
-		
+	
+	print(tadpoles)
 func spawn_mob():
 	var mob = mob_scene.instantiate()
 

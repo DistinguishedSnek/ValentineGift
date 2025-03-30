@@ -29,15 +29,14 @@ func _process(_delta: float) -> void:
 
 
 func _on_lillypad_despawn():
-	queue_free()
+	consumed()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Players"):
-		print("Snack being monched")
 		eaten.emit()
 
 func consumed():
-	print("Snack consumed")
+	remove_from_group("Snacks")
 	queue_free()
 	
 func splat():
