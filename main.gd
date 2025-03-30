@@ -66,7 +66,7 @@ func new_game():
 	lillypad_count = 0
 	uncaught_tadpole = false
 	get_tree().call_group("mobs", "queue_free")
-	get_tree().call_group("Lillypads", "queue_free")
+	get_tree().call_group("lillypads", "queue_free")
 	get_tree().call_group("Tadpoles", "queue_free")
 	get_tree().call_group("Snacks", "queue_free")
 	$Music.play()
@@ -171,7 +171,7 @@ func spawn_lillypad() -> void:
 	# Add some randomness to the direction.
 	pad.rotation = randf_range(-PI, PI)
 	
-	pad.add_to_group("Lillypads")
+	pad.add_to_group("lillypads")
 
 	# Spawn the mob by adding it to the Main scene.
 	add_child(pad)

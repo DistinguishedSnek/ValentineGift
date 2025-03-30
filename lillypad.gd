@@ -54,7 +54,6 @@ func _on_lilly_pad_deteriorate_timeout() -> void:
 
 func _on_lilly_pad_perish_timeout() -> void:
 	perish.emit()
-	remove_from_group("lillypads")
 	queue_free() # Replace with function body.
 	
 	

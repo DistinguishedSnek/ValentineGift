@@ -95,7 +95,6 @@ func _process(delta):
 				#print("Entered jump_finish")
 				charging = false
 				distance = ghostfriend_distance
-				new_position = new_position.clamp(Vector2.ZERO, screen_size)
 				$Timer.start()
 				jumping.emit()
 				
@@ -109,6 +108,8 @@ func _process(delta):
 				$TimerHop.start()
 				hoptimer = false
 			position = position.move_toward(new_position, speed * delta)
+			if ((position.x < 0) || (position.x > screen_size.x) || (position.y < 0) || (position.y > screen_size.y)):
+				new_position = position 
 			if position == new_position:
 				distance = Vector2.ZERO
 				if dropped == false:
