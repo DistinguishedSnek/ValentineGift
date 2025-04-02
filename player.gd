@@ -6,7 +6,7 @@ signal jumping
 signal death
 
 @export var min_charge := 100 #instant jump
-@export var max_charge := 1000
+@export var max_charge := 2000
 @export var speed = 400 # How fast the player will move (pixels/sec).
 
 var screen_size # Size of the game window.
